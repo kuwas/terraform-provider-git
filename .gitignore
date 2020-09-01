@@ -1,0 +1,43 @@
+# #####
+# TERRAFORM LIFECYCLE MANAGED
+# All changes will be overwritten
+#####
+# git #
+!.gitkeep
+!.gitignore
+
+# macos #
+*.db
+._*
+.DS_*
+.Spotlight*
+.Trashes*
+
+# ide #
+*.iml
+.idea
+
+# go #
+*.out
+*.test
+vendor
+
+# js #
+node_modules
+
+# kube #
+kubeconfig*
+
+# tf #
+*.tfvars*
+!*.auto.tfvars*
+*.tfstate*
+.terraform
+
+# tmp #
+*.*~
+*.lock
+*.log
+*.pid
+*.swp
+tmp

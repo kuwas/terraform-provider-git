@@ -1,0 +1,63 @@
+---
+# #####
+# TERRAFORM LIFECYCLE MANAGED
+# All changes will be overwritten
+#####
+# https://docs.github.com/en/actions/reference
+# https://docs.github.com/en/actions/reference/events-that-trigger-workflows
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+# https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions
+# https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
+# https://docs.github.com/en/actions/reference/software-installed-on-github-hosted-runners
+name : issue
+on :
+  issues :
+    types :
+    - "opened"
+    - "reopened"
+    - "edited"
+    - "closed"
+    - "transferred"
+    - "demilestoned"
+    - "milestoned"
+    - "unpinned"
+    - "pinned"
+    - "unassigned"
+    - "assigned"
+    - "unlabeled"
+    - "labeled"
+    - "unlocked"
+    - "locked"
+
+jobs :
+  default :
+    runs-on : ubuntu-latest
+    steps :
+    - name : default label bug
+      uses : "npm/.github/actions/default@master"
+      with :
+        regex   : '^(BUG)'
+        subject : '${{ github.event.issue.title }}'
+        input   : 'issues | addLabels | context.repo | issue_number:${{ github.event.issue.number }} | labels:[ "bug" ]'
+        token   : '${{ secrets.GITHUB_TOKEN }}'
+    - name : default label feature
+      uses : "npm/.github/actions/default@master"
+      with :
+        regex   : '^(FEATURE)'
+        subject : '${{ github.event.issue.title }}'
+        input   : 'issues | addLabels | context.repo | issue_number:${{ github.event.issue.number }} | labels:[ "feature" ]'
+        token   : '${{ secrets.GITHUB_TOKEN }}'
+    - name : default label question
+      uses : "npm/.github/actions/default@master"
+      with :
+        regex   : '^(QUESTION)'
+        subject : '${{ github.event.issue.title }}'
+        input   : 'issues | addLabels | context.repo | issue_number:${{ github.event.issue.number }} | labels:[ "question" ]'
+        token   : '${{ secrets.GITHUB_TOKEN }}'
+    - name : default assignees actor
+      uses : "npm/.github/actions/default@master"
+      if : contains( github.actor , '[bot]' ) == false
+      with :
+        input   : 'issues | addAssignees | context.repo | issue_number:${{ github.event.issue.number }} | assignees:[ "${{ github.actor }}" ]'
+        token   : '${{ secrets.GITHUB_TOKEN }}'
+
